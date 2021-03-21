@@ -56,7 +56,7 @@ router.get('/auth/google/callback',
             isActive: true
         }
         user.findOne({ _id: Number(userprofile.id) }, (err, data) => {
-            if (err) return res.status(500).send(lasfhnlsda);
+            if (err) return res.status(500).send(err);
             if (!data){
                 user.create(info, (err, data) => {
                     if (err) return res.status(500).send(err);
