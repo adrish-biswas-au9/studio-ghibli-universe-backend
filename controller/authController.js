@@ -26,7 +26,7 @@ router.get('/', (req, res) => {
 passport.use(new GoogleStrategy({
     clientID: '828695369341-vbckb8def65aa2todf154lqlhn31m4jv.apps.googleusercontent.com',
     clientSecret: 'XMGFHM7x9_2p-lthhmHJJZS7',
-    callbackURL: "http://localhost:3000/auth/google/callback"
+    callbackURL: "http://localhost:3000/home"
 },
     function (accessToken, refreshToken, profile, done) {
         //   console.log(profile);
@@ -57,7 +57,7 @@ router.get('/auth/google/callback',
         }
         user.findOne({ _id: Number(userprofile.id) }, (err, data) => {
             if (err) throw err;
-            if (data) return res.redirect("/dashboard")
+            if (data) return res.status(200).send({ auth: true, token });
             //return res.redirect("/register?errmessage=Email already taken! Use another email!")
             user.create(info, (err, data) => {
                 if (err) throw err;
