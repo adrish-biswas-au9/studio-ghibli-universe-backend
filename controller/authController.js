@@ -19,7 +19,7 @@ passport.serializeUser((user, cb) => {
     cb(null, user)
 })
 
-router.get('/health', (req, res) => {
+router.get('/', (req, res) => {
     return res.status(200).send("Health Ok")
 })
 
