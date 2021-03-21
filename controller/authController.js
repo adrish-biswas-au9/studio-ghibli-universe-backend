@@ -56,14 +56,17 @@ router.get('/auth/google/callback',
             isActive: true
         }
         user.findOne({ _id: Number(userprofile.id) }, (err, data) => {
-            if (err) throw err;
-            if (data) return res.status(200).send({ auth: true, token });
+            if (err) return res.status(500).send(err);
+            if (!data){
+                user.create(info, (err, data) => {
+                    if (err) return res.status(500).send(err);
+                    //return res.redirect("/dashboard")
+                    return res.status(200).send({ auth: true, token });
+                });
+            }
+            else return res.status(200).send({ auth: true, token });
             //return res.redirect("/register?errmessage=Email already taken! Use another email!")
-            user.create(info, (err, data) => {
-                if (err) throw err;
-                //return res.redirect("/dashboard")
-                return res.status(200).send({ auth: true, token });
-            });
+            
         })
         //req.session.user = ;
         //return res.redirect('/dashboard');
