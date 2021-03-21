@@ -26,7 +26,7 @@ router.get('/', (req, res) => {
 passport.use(new GoogleStrategy({
     clientID: '828695369341-vbckb8def65aa2todf154lqlhn31m4jv.apps.googleusercontent.com',
     clientSecret: 'XMGFHM7x9_2p-lthhmHJJZS7',
-    callbackURL: "http://localhost:3000/home"
+    callbackURL: "https://studio-ghibli-universe-backend.herokuapp.com/api/auth/auth/google/callback"
 },
     function (accessToken, refreshToken, profile, done) {
         //   console.log(profile);
