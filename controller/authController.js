@@ -12,141 +12,88 @@ const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 //parse data for post call
 router.use(express.urlencoded({ extended: true }))
 router.use(express.json())
-router.use(cors())
-//start passport
-router.use(passport.initialize());
-router.use(passport.session());
-
-passport.serializeUser((user, cb) => {
-    cb(null, user)
-})
-
-passport.deserializeUser((user, cb) => {
-    cb(null, user);
-});
+//router.use(cors())
 
 router.get('/', (req, res) => {
     return res.status(200).send("Health Ok")
 })
 
-passport.use(new GoogleStrategy({
-    clientID: '828695369341-vbckb8def65aa2todf154lqlhn31m4jv.apps.googleusercontent.com',
-    clientSecret: 'XMGFHM7x9_2p-lthhmHJJZS7',
-    callbackURL: "http://localhost:3000/home"
-},
-    function (accessToken, refreshToken, profile, done) {
-        //   console.log(profile);
-
-        //    User.findOrCreate({ googleId: profile.id }, function (err, user) {
-
-        //    });
-        userprofile = profile;
-        let token = jwt.sign({ id: Number(userprofile.id) }, config.secret, { expiresIn: 86400 })
-        //req.session.user = token;
-        const info = {
-            "_id": Number(userprofile.id),
-            "name": userprofile.name.givenName,
-            "email": '',
-            "password": '',
-            role: 'user',
-            isActive: true
-        }
-        user.findOne({ _id: Number(userprofile.id) }, (err, data) => {
-            if (err) return res.status(500).send(err);
-            if (!data) {
-                user.create(info, (err, data) => {
-                    if (err) return res.status(500).send(err);
-                    //return res.redirect("/dashboard")
-                    res.setHeader('Access-Control-Allow-Origin', '*')
-                    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
-                    return done(null, { auth: true, token });
-                    //return res.status(200).send({ auth: true, token });
-                });
-            }
-            else {
-                res.setHeader('Access-Control-Allow-Origin', '*')
-                res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
-                return done(null, { auth: true, token });
-                //return res.status(200).send({ auth: true, token });
-            }
-            
-            //return res.redirect("/register?errmessage=Email already taken! Use another email!")
-
-        })
-        
-        
+//register
+router.post('/register', (req, res) => {
+    const info = {
+        "name": req.body.name,
+        "email": req.body.email,
+        "password": req.body.password,
+        "role": req.body.role ? req.body.role : 'user',
+        "isActive": Boolean(req.body.isActive) ? Boolean(req.body.isActive) : true
     }
-));
+    user.findOne({email:req.body.email},(err, data) => {
+        if (err) throw err;
+        if(data) return res.status(400).send("Email already taken! Use another email!")
+        user.create(info, (err, data) => {
+            if (err) throw err;
+            return res.status(200).send("Data Registered.")
+            // res.redirect('/')
+        });
+    })
+    
+});
 
-router.get('/auth/google',
-    passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/plus.login'] }));
-
-router.get('/auth/google/callback',
-    passport.authenticate('google', { failureRedirect: '/error' }),
-    function (req, res) {
-        
-        //return res.status(200).send(userprofile);
-        //req.session.user = ;
-        //return res.redirect('/dashboard');
-    });
-
-
+//get all users
 router.get('/users', (req, res) => {
-    user.find({}, (err, data) => {
-        if (err) return res.status(500).send(err);
+    let query = {isActive: true }
+    //console.log("session>>>",req.session.user)
+    // if (!req.session.user) {
+    //     return res.send("login expired, login again!");
+    // }
+    // if (req.session.user.role!=="admin") {
+    //     return res.send("You are not allowed here!");
+    // }
+    // else if (req.query.role) {
+    //     query = { role: req.query.role, isActive: true }
+    // }
+    // else {
+    //     query = { isActive: true }
+    // }
+    
+    user.find(query).toArray((err, data) => {
+        if (err) throw err;
         return res.status(200).send(data);
     })
 })
-router.post('/register', (req, res) => {
-    let hashedPassword = bycrypt.hashSync(req.body.password, 8)
-    user.create(
-        {
-            "_id": new Date().valueOf(),
-            name: req.body.name,
-            email: req.body.email,
-            password: hashedPassword,
-            role: req.body.role ? req.body.role : 'user',
-            isActive: req.body.isActive ? req.body.isActive : true
+
+//login
+router.get('/login', (req, res) => {
+    const info = {
+        "isActive": Boolean(req.body.isActive) ? Boolean(req.body.isActive) : true,
+        "email": req.body.email,
+        "password": req.body.password
+    }
+    user.findOne(info, (err, data) => {
+        if (err || !data) {
+            return res.status(400).send("Inavlid credentials! Please try again");
         }
-        , (err, data) => {
-            if (err) return res.status(500).send(err);
-            res.setHeader('Access-Control-Allow-Origin', '*')
-            res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With,Content-Type,Accept')
-            return res.status(200).send("Successful registration!");
-        })
+        //req.session.user=data;
+        return res.status(200).send(data)
+        // res.redirect('/')
+    });
+});
+
+//logout
+router.get('/logout', (req, res) => {
+    //req.session.user=null;
+    return res.status(200).send("Logout successful!")
 })
 
-router.post('/login', (req, res) => {
-    user.findOne({ email: req.body.email, isActive: true }
-        , (err, data) => {
-            if (err) return res.status(500).send(err);
-            if (!data) return res.status(500).send({ auth: false, err: "No users found login first!" });
-            else {
-                let validPassword = bycrypt.compareSync(req.body.password, data.password)
-                if (!validPassword) return res.status(500).send({ auth: false, err: "Wrong password entered!" });
-                let token = jwt.sign({ id: data._id }, config.secret, { expiresIn: 86400 })
-                return res.status(200).send({ auth: true, token });
-            }
-        })
-})
 
-router.get('/userInfo', (req, res) => {
-    let token = req.headers['x-access-token'];
-    if (!token) return res.status(500).send({ auth: false, err: "No token provided!" });
-    jwt.verify(token, config.secret, (err, data) => {
-        if (err) return res.status(500).send({ auth: false, err: "Wrong token provided!" });
-        user.findOne({ _id: data.id }, { password: 0 }, (err, data) => {
-            if (err) return res.status(500).send(err);
-            return res.status(200).send(data);
-        })
-    })
-})
-
+//Hard delete user
 router.delete('/deleteUser', (req, res) => {
-    user.remove({ _id: Number(req.body._id) }
-        , (err, data) => {
-            if (err) return res.status(500).send(err);
-            return res.status(200).send("user deleted!");
+    let id = req.body._id;
+    user.remove(
+        { _id: mongoose.ObjectId(id) },
+        (err, data) => {
+            if (err) throw err;
+            return res.status(200).send("Data deleted")
         })
 })
 
