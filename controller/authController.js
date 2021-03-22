@@ -64,13 +64,13 @@ router.get('/auth/google/callback',
                     if (err) return res.status(500).send(err);
                     //return res.redirect("/dashboard")
                     res.setHeader('Access-Control-Allow-Origin', '*')
-                    //res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With,Content-Type,Accept')
+                    res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With,Content-Type,Accept')
                     return res.status(200).send({ auth: true, token });
                 });
             }
             else {
                 res.setHeader('Access-Control-Allow-Origin', '*')
-                //res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With,Content-Type,Accept')
+                res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With,Content-Type,Accept')
                 return res.status(200).send({ auth: true, token });
             }
             
