@@ -48,14 +48,14 @@ router.get('/auth/google/callback',
         let token = jwt.sign({ id: Number(userprofile.id) }, config.secret, { expiresIn: 86400 })
         //req.session.user = token;
         const info = {
-            "_id": userprofile.id,
+            "_id": Number(userprofile.id),
             "name": userprofile.name.givenName,
             "email": '',
             "password": '',
             role: 'user',
             isActive: true
         }
-        user.findOne({ _id: userprofile.id }, (err, data) => {
+        user.findOne({ _id: Number(userprofile.id) }, (err, data) => {
             if (err) return res.status(500).send(err);
             if (!data){
                 user.create(info, (err, data) => {
