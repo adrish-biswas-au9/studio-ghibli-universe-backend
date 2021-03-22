@@ -64,7 +64,7 @@ router.get('/users', (req, res) => {
 })
 
 //login
-router.get('/login', (req, res) => {
+router.post('/login', (req, res) => {
     
     const info = {
         "isActive": Boolean(req.body.isActive) ? Boolean(req.body.isActive) : true,
