@@ -20,28 +20,29 @@ router.get('/', (req, res) => {
 
 //register
 router.post('/register', (req, res) => {
+    let hashedPassword = bycrypt.hashSync(req.body.password, 8)
     const info = {
         "name": req.body.name,
         "email": req.body.email,
-        "password": req.body.password,
+        "password": hashedPassword,
         "role": req.body.role ? req.body.role : 'user',
         "isActive": Boolean(req.body.isActive) ? Boolean(req.body.isActive) : true
     }
-    user.findOne({email:req.body.email},(err, data) => {
+    user.findOne({ email: req.body.email }, (err, data) => {
         if (err) throw err;
-        if(data) return res.status(400).send("Email already taken! Use another email!")
+        if (data) return res.status(400).send("Email already taken! Use another email!")
         user.create(info, (err, data) => {
             if (err) throw err;
             return res.status(200).send("Data Registered.")
             // res.redirect('/')
         });
     })
-    
+
 });
 
 //get all users
 router.get('/users', (req, res) => {
-    let query = {isActive: true }
+    let query = { isActive: true }
     //console.log("session>>>",req.session.user)
     // if (!req.session.user) {
     //     return res.send("login expired, login again!");
@@ -55,7 +56,7 @@ router.get('/users', (req, res) => {
     // else {
     //     query = { isActive: true }
     // }
-    
+
     user.find(query).toArray((err, data) => {
         if (err) throw err;
         return res.status(200).send(data);
@@ -64,15 +65,17 @@ router.get('/users', (req, res) => {
 
 //login
 router.get('/login', (req, res) => {
+    
     const info = {
         "isActive": Boolean(req.body.isActive) ? Boolean(req.body.isActive) : true,
-        "email": req.body.email,
-        "password": req.body.password
+        "email": req.body.email
     }
     user.findOne(info, (err, data) => {
         if (err || !data) {
-            return res.status(400).send("Inavlid credentials! Please try again");
+            return res.status(400).send("Inavlid email! Please try again");
         }
+        let validPassword = bycrypt.compareSync(req.body.password, data.password)
+        if(!validPassword) return res.status(400).send("Wrong password entered!");
         //req.session.user=data;
         return res.status(200).send(data)
         // res.redirect('/')
