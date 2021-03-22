@@ -6,11 +6,13 @@ const bycrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
 const passport = require('passport');
+const cors = require('cors');
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
 //parse data for post call
 router.use(express.urlencoded({ extended: true }))
 router.use(express.json())
+router.use(cors())
 //start passport
 router.use(passport.initialize());
 router.use(passport.session());
