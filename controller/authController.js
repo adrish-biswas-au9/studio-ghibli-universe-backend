@@ -42,7 +42,7 @@ passport.use(new GoogleStrategy({
 ));
 
 router.get('/auth/google',
-  passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/plus.login'] }));
+    passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/plus.login'] }));
 
 router.get('/auth/google/callback',
     passport.authenticate('google', { failureRedirect: '/error' }),
@@ -59,16 +59,23 @@ router.get('/auth/google/callback',
         }
         user.findOne({ _id: Number(userprofile.id) }, (err, data) => {
             if (err) return res.status(500).send(err);
-            if (!data){
+            if (!data) {
                 user.create(info, (err, data) => {
                     if (err) return res.status(500).send(err);
                     //return res.redirect("/dashboard")
+                    res.setHeader('Access-Control-Allow-Origin', '*')
+                    res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With,Content-Type,Accept')
                     return res.status(200).send({ auth: true, token });
                 });
             }
-            else return res.status(200).send({ auth: true, token });
-            //return res.redirect("/register?errmessage=Email already taken! Use another email!")
+            else {
+                res.setHeader('Access-Control-Allow-Origin', '*')
+                res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With,Content-Type,Accept')
+                return res.status(200).send({ auth: true, token });
+            }
             
+            //return res.redirect("/register?errmessage=Email already taken! Use another email!")
+
         })
         //return res.status(200).send(userprofile);
         //req.session.user = ;
@@ -95,6 +102,8 @@ router.post('/register', (req, res) => {
         }
         , (err, data) => {
             if (err) return res.status(500).send(err);
+            res.setHeader('Access-Control-Allow-Origin', '*')
+            res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With,Content-Type,Accept')
             return res.status(200).send("Successful registration!");
         })
 })
