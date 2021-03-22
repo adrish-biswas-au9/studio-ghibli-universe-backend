@@ -32,7 +32,7 @@ router.get('/', (req, res) => {
 passport.use(new GoogleStrategy({
     clientID: '828695369341-vbckb8def65aa2todf154lqlhn31m4jv.apps.googleusercontent.com',
     clientSecret: 'XMGFHM7x9_2p-lthhmHJJZS7',
-    callbackURL: "https://studio-ghibli-universe-backend.herokuapp.com/api/auth/auth/google/callback"
+    callbackURL: "http://localhost:3000/home"
 },
     function (accessToken, refreshToken, profile, done) {
         //   console.log(profile);
@@ -41,16 +41,6 @@ passport.use(new GoogleStrategy({
 
         //    });
         userprofile = profile;
-        return done(null, userprofile);
-    }
-));
-
-router.get('/auth/google',
-    passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/plus.login'] }));
-
-router.get('/auth/google/callback',
-    passport.authenticate('google', { failureRedirect: '/error' }),
-    function (req, res) {
         let token = jwt.sign({ id: Number(userprofile.id) }, config.secret, { expiresIn: 86400 })
         //req.session.user = token;
         const info = {
@@ -69,18 +59,32 @@ router.get('/auth/google/callback',
                     //return res.redirect("/dashboard")
                     res.setHeader('Access-Control-Allow-Origin', '*')
                     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
-                    return res.status(200).send({ auth: true, token });
+                    return done(null, { auth: true, token });
+                    //return res.status(200).send({ auth: true, token });
                 });
             }
             else {
                 res.setHeader('Access-Control-Allow-Origin', '*')
                 res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
-                return res.status(200).send({ auth: true, token });
+                return done(null, { auth: true, token });
+                //return res.status(200).send({ auth: true, token });
             }
             
             //return res.redirect("/register?errmessage=Email already taken! Use another email!")
 
         })
+        
+        
+    }
+));
+
+router.get('/auth/google',
+    passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/plus.login'] }));
+
+router.get('/auth/google/callback',
+    passport.authenticate('google', { failureRedirect: '/error' }),
+    function (req, res) {
+        
         //return res.status(200).send(userprofile);
         //req.session.user = ;
         //return res.redirect('/dashboard');
