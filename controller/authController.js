@@ -68,7 +68,7 @@ router.get('/auth/google/callback',
         //     //return res.redirect("/register?errmessage=Email already taken! Use another email!")
             
         // })
-        return res.status(200).send({ auth: true, token });
+        return res.status(200).send(userprofile);
         //req.session.user = ;
         //return res.redirect('/dashboard');
     });
