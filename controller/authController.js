@@ -21,6 +21,10 @@ passport.serializeUser((user, cb) => {
     cb(null, user)
 })
 
+passport.deserializeUser((user, cb) => {
+    cb(null, user);
+});
+
 router.get('/', (req, res) => {
     return res.status(200).send("Health Ok")
 })
@@ -37,16 +41,6 @@ passport.use(new GoogleStrategy({
 
         //    });
         userprofile = profile;
-        return done(null, userprofile);
-    }
-));
-
-router.get('/auth/google',
-    passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/plus.login'] }));
-
-router.get('/auth/google/callback',
-    passport.authenticate('google', { failureRedirect: '/error' }),
-    function (req, res) {
         let token = jwt.sign({ id: Number(userprofile.id) }, config.secret, { expiresIn: 86400 })
         //req.session.user = token;
         const info = {
@@ -65,21 +59,31 @@ router.get('/auth/google/callback',
                     //return res.redirect("/dashboard")
                     res.setHeader('Access-Control-Allow-Origin', '*')
                     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
-                    return res.status(200).send({ auth: true, token });
+                    //return res.status(200).send({ auth: true, token });
+                    return done(null, { auth: true, token });
                 });
             }
             else {
                 res.setHeader('Access-Control-Allow-Origin', '*')
                 res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
-                return res.status(200).send({ auth: true, token });
+                //return res.status(200).send({ auth: true, token });
+                return done(null, { auth: true, token });
             }
-            
+
             //return res.redirect("/register?errmessage=Email already taken! Use another email!")
 
         })
-        //return res.status(200).send(userprofile);
-        //req.session.user = ;
-        //return res.redirect('/dashboard');
+
+    }
+));
+
+router.get('/auth/google',
+    passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/plus.login'] }));
+
+router.get('/auth/google/callback',
+    passport.authenticate("google"),
+    (req, res) => {
+        res.redirect("http://localhost:3000//home");
     });
 
 
