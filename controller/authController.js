@@ -18,6 +18,41 @@ router.get('/', (req, res) => {
     return res.status(200).send("Health Ok")
 })
 
+
+router.post('/google', (req,res) => {
+    const info = {
+        "name": req.body.name,
+        "email": req.body.email,
+        "password": '',
+        role: 'user',
+        isActive: true
+    }
+    user.findOne({ "email": req.body.email }, (err, data) => {
+        if (err) return res.status(500).send(err);
+        if (!data) {
+            user.create(info, (err, data) => {
+                if (err) return res.status(500).send(err);
+                //return res.redirect("/dashboard")
+                // res.setHeader('Access-Control-Allow-Origin', '*')
+                // res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
+                // return done(null, { auth: true, token });
+                return res.status(200).send("Registered!");
+            });
+        }
+        else {
+            // res.setHeader('Access-Control-Allow-Origin', '*')
+            // res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
+            // return done(null, { auth: true, token });
+            return res.status(200).send("Logged In!");
+        }
+
+        //return res.redirect("/register?errmessage=Email already taken! Use another email!")
+
+    })
+})
+
+
+
 //register
 router.post('/register', (req, res) => {
     let hashedPassword = bycrypt.hashSync(req.body.password, 8)
