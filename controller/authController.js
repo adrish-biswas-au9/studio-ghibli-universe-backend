@@ -65,10 +65,10 @@ router.post('/register', (req, res) => {
     }
     user.findOne({ email: req.body.email }, (err, data) => {
         if (err) throw err;
-        if (data) return res.status(400).send("Email already taken! Use another email!")
+        if (data) return res.status(400).send({ auth: false, message:"Email already taken! Use another email!" })
         user.create(info, (err, data) => {
             if (err) throw err;
-            return res.status(200).send("Data Registered.")
+            return res.status(200).send({ auth: true, message:"Data Registered!" })
             // res.redirect('/')
         });
     })
