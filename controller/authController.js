@@ -19,15 +19,18 @@ router.get('/', (req, res) => {
 })
 
 
-router.post('/google', (req,res) => {
+router.post('/google', (req, res) => {
     const info = {
         "name": req.body.name,
         "email": req.body.email,
         "password": '',
-        role: 'user',
-        isActive: true
+        "role": req.body.role ? req.body.role : 'user',
+        "isActive": Boolean(req.body.isActive) ? Boolean(req.body.isActive) : true
     }
-    user.findOne({ "email": req.body.email }, (err, data) => {
+    user.findOne({
+        "isActive": Boolean(req.body.isActive) ? Boolean(req.body.isActive) : true,
+        "email": req.body.email
+    }, (err, data) => {
         if (err) return res.status(500).send(err);
         if (!data) {
             user.create(info, (err, data) => {
@@ -65,10 +68,10 @@ router.post('/register', (req, res) => {
     }
     user.findOne({ email: req.body.email }, (err, data) => {
         if (err) throw err;
-        if (data) return res.status(400).send({ auth: false, message:"Email already taken! Use another email!" })
+        if (data) return res.status(400).send({ auth: false, message: "Email already taken! Use another email!" })
         user.create(info, (err, data) => {
             if (err) throw err;
-            return res.status(200).send({ auth: true, message:"Data Registered!" })
+            return res.status(200).send({ auth: true, message: "Data Registered!" })
             // res.redirect('/')
         });
     })
@@ -100,7 +103,7 @@ router.get('/users', (req, res) => {
 
 //login
 router.post('/login', (req, res) => {
-    
+
     const info = {
         "isActive": Boolean(req.body.isActive) ? Boolean(req.body.isActive) : true,
         "email": req.body.email
@@ -110,7 +113,7 @@ router.post('/login', (req, res) => {
             return res.status(400).send("Inavlid email! Please try again");
         }
         let validPassword = bycrypt.compareSync(req.body.password, data.password)
-        if(!validPassword) return res.status(400).send("Wrong password entered!");
+        if (!validPassword) return res.status(400).send("Wrong password entered!");
         //req.session.user=data;
         return res.status(200).send(data)
         // res.redirect('/')
