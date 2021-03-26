@@ -36,14 +36,14 @@ router.post('/google', (req,res) => {
                 // res.setHeader('Access-Control-Allow-Origin', '*')
                 // res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
                 // return done(null, { auth: true, token });
-                return res.status(200).send("Registered!");
+                return res.status(200).send(info);
             });
         }
         else {
             // res.setHeader('Access-Control-Allow-Origin', '*')
             // res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
             // return done(null, { auth: true, token });
-            return res.status(200).send("Logged In!");
+            return res.status(200).send(data);
         }
 
         //return res.redirect("/register?errmessage=Email already taken! Use another email!")
