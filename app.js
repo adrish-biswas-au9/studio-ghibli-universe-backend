@@ -8,6 +8,10 @@ const authController = require('./controller/authController');
 // const { Router, response } = require('express');
 app.use(cors());
 app.use('/api/auth/', authController)
+app.get('/', (req, res) => {
+    return res.status(200).send("Health Ok")
+})
+
 
 //middleware
 //cross origin resource sharing
