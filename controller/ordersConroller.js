@@ -32,4 +32,33 @@ router.get('/history',(req,res)=>{
 })
 
 
+router.put('/edit',function (req, res) {
+    let status;
+    if(req.body.isActive){
+        if(req.body.isActive=='true'){
+            status=true
+        }else{
+            status=false
+        }
+    }else{
+        status=false
+    }
+    // var id = req.params.id;
+    // let { id } = req.params //destructuring
+    let id = req.body._id;
+    order.updateOne(
+      { _id: mongoose.ObjectId(req.body._id) },
+      {
+          name: req.body.name,
+          email: req.body.email,
+          role: req.body.role,
+          isActive: status
+      },
+      (err, data) => {
+        if (err) res.status(500).send({ auth: true, message: err });
+        return res.status(200).send(data)
+      })
+  })
+
+
 module.exports = router;
