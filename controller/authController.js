@@ -149,14 +149,9 @@ router.put('/edit', function (req, res) {
     // let { id } = req.params //destructuring
     let id = req.body._id;
     user.updateOne(
-        { _id: mongoose.ObjectId(req.body._id) },
+        {_id:mongoose.ObjectId(req.body._id)},
         {
-            $set:{
-                name: req.body.name,
-                email: req.body.email,
-                role: req.body.role,
-                isActive: req.body.isActive
-            }
+            isActive: req.body.isActive
         },
         (err, data) => {
             if (err) res.status(500).send({ auth: true, message: err });
