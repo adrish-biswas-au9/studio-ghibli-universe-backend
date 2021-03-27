@@ -134,7 +134,7 @@ router.get('/logout', (req, res) => {
     return res.status(200).send("Logout successful!")
 })
 
-router.put('/edit', function (req, res) {
+router.put('/delete', function (req, res) {
     // let status;
     // if (req.body.isActive) {
     //     if (req.body.isActive == 'true') {
@@ -148,10 +148,10 @@ router.put('/edit', function (req, res) {
     // var id = req.params.id;
     // let { id } = req.params //destructuring
     let id = req.body._id;
-    user.findOneAndUpdate(
-        { _id: mongoose.ObjectId(req.body._id) },
+    user.updateOne(
+        { email: req.body.email },
         {
-            isActive: req.body.isActive
+            isActive: false
         },
         (err, data) => {
             if (err) res.status(500).send({ auth: true, message: err });
