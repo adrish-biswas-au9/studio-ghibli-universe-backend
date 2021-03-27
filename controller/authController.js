@@ -101,9 +101,9 @@ router.post('/register', (req, res) => {
 //     })
 // })
 
-router.get('/users',(req,res)=>{
-    user.find({},(err,data)=>{
-        if(err) return  res.status(500).send(err);
+router.get('/users', (req, res) => {
+    user.find({isActive: true}, (err, data) => {
+        if (err) return res.status(500).send(err);
         return res.status(200).send(data);
     })
 })
