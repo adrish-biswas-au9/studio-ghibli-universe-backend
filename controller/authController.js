@@ -151,10 +151,12 @@ router.put('/edit', function (req, res) {
     user.updateOne(
         { _id: mongoose.ObjectId(req.body._id) },
         {
-            name: req.body.name,
-            email: req.body.email,
-            role: req.body.role,
-            isActive: req.body.isActive
+            $set:{
+                name: req.body.name,
+                email: req.body.email,
+                role: req.body.role,
+                isActive: req.body.isActive
+            }
         },
         (err, data) => {
             if (err) res.status(500).send({ auth: true, message: err });
