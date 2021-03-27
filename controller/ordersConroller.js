@@ -11,7 +11,6 @@ router.use(express.json());
 
 
 router.post('/register', (req, res) => {
-    let hashedPassword = bycrypt.hashSync(req.body.password, 8)
     const info = {
         "email": req.body.email,
         "status": 'pending',
@@ -24,3 +23,7 @@ router.post('/register', (req, res) => {
         // res.redirect('/')
     });
 })
+
+
+
+module.exports = router;

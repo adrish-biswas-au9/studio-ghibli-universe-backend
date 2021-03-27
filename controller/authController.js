@@ -14,9 +14,9 @@ router.use(express.urlencoded({ extended: true }))
 router.use(express.json())
 //router.use(cors())
 
-router.get('/', (req, res) => {
-    return res.status(200).send("Health Ok")
-})
+// router.get('/', (req, res) => {
+//     return res.status(200).send("Health Ok")
+// })
 
 
 router.post('/google', (req, res) => {
