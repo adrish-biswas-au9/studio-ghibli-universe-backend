@@ -24,10 +24,9 @@ router.post('/register', (req, res) => {
     });
 })
 
-router.get('/history', (req, res) => {
-    
-    order.find({staus:"pending"}).toArray((err, data) => {
-        if (err) res.status(400).send({ auth: true, message: err });;
+router.get('/history',(req,res)=>{
+    order.find({ "status": "pending"},(err,data)=>{
+        if(err) return  res.status(500).send({ auth: true, message: err });
         return res.status(200).send(data);
     })
 })
