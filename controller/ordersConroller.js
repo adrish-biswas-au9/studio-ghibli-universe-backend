@@ -46,19 +46,14 @@ router.put('/edit',function (req, res) {
     // var id = req.params.id;
     // let { id } = req.params //destructuring
     let id = req.body._id;
-    order.update(
-      { _id: mongoose.ObjectId(req.body._id) },
+    order.updateOne(
+      { email: req.body.email },
       {
-        $set: {
-          name: req.body.name,
-          email: req.body.email,
-          role: req.body.role,
-          isActive: status
-        }
+          status: req.body.status
       },
       (err, data) => {
-        if (err) throw err;
-        return res.send(data)
+          if (err) res.status(500).send({ auth: true, message: err });
+          return res.status(200).send(data)
       })
   })
 
