@@ -79,27 +79,35 @@ router.post('/register', (req, res) => {
 });
 
 //get all users
-router.get('/users', (req, res) => {
-    let query = { isActive: true }
-    //console.log("session>>>",req.session.user)
-    // if (!req.session.user) {
-    //     return res.send("login expired, login again!");
-    // }
-    // if (req.session.user.role!=="admin") {
-    //     return res.send("You are not allowed here!");
-    // }
-    // else if (req.query.role) {
-    //     query = { role: req.query.role, isActive: true }
-    // }
-    // else {
-    //     query = { isActive: true }
-    // }
+// router.get('/users', (req, res) => {
+//     let query = { isActive: true }
+//     //console.log("session>>>",req.session.user)
+//     // if (!req.session.user) {
+//     //     return res.send("login expired, login again!");
+//     // }
+//     // if (req.session.user.role!=="admin") {
+//     //     return res.send("You are not allowed here!");
+//     // }
+//     // else if (req.query.role) {
+//     //     query = { role: req.query.role, isActive: true }
+//     // }
+//     // else {
+//     //     query = { isActive: true }
+//     // }
 
-    user.find(query).toArray((err, data) => {
-        if (err) throw err;
+//     user.find(query).toArray((err, data) => {
+//         if (err) throw err;
+//         return res.status(200).send(data);
+//     })
+// })
+
+router.get('/users',(req,res)=>{
+    user.find({},(err,data)=>{
+        if(err) return  res.status(500).send(err);
         return res.status(200).send(data);
     })
 })
+
 
 //login
 router.post('/login', (req, res) => {
