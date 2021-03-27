@@ -24,6 +24,13 @@ router.post('/register', (req, res) => {
     });
 })
 
+router.get('/history', (req, res) => {
+    
+    order.find({}).toArray((err, data) => {
+        if (err) res.status(400).send({ auth: true, message: err });;
+        return res.status(200).send(data);
+    })
+})
 
 
 module.exports = router;
