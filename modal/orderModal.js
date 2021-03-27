@@ -1,6 +1,6 @@
 const mongoose=require('mongoose');
 const orderSchema=new mongoose.Schema({
-    "name": String,
+    "email": String,
     "status": String,
     "date": String
 })
