@@ -46,7 +46,7 @@ router.put('/edit',function (req, res) {
     // var id = req.params.id;
     // let { id } = req.params //destructuring
     let id = req.body._id;
-    order.updateOne(
+    order.update(
       { _id: mongoose.ObjectId(req.body._id) },
       {
         $set: {

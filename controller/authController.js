@@ -148,8 +148,8 @@ router.put('/edit', function (req, res) {
     // var id = req.params.id;
     // let { id } = req.params //destructuring
     let id = req.body._id;
-    user.updateOne(
-        {_id:mongoose.ObjectId(req.body._id)},
+    user.findOneAndUpdate(
+        { _id: mongoose.ObjectId(req.body._id) },
         {
             isActive: req.body.isActive
         },
