@@ -14,7 +14,7 @@ router.post('/register', (req, res) => {
     const info = {
         "email": req.body.email,
         "status": 'pending',
-        "date": new Date(Date.now()).toISOString()
+        "date": new Date(Date.now())
     }
 
     order.create(info, (err, data) => {
