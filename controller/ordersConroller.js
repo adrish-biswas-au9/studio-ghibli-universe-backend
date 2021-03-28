@@ -47,7 +47,7 @@ router.put('/edit',function (req, res) {
     // let { id } = req.params //destructuring
     let id = req.body._id;
     order.updateOne(
-      { _id:mongoose.ObjectId(req.body._id) },
+      { _id:req.body._id },
       {
           status: req.body.status
       },
