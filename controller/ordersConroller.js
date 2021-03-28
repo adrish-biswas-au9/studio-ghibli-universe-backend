@@ -14,7 +14,8 @@ router.post('/register', (req, res) => {
     const info = {
         "email": req.body.email,
         "status": 'pending',
-        "date": new Date(Date.now())
+        "date": new Date(Date.now()),
+        "expiration_date": new Date(new Date(Date.now()).valueOf() + 3600 * 1000 * 24 * 365)
     }
 
     order.create(info, (err, data) => {
