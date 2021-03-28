@@ -25,7 +25,7 @@ router.post('/register', (req, res) => {
 })
 
 router.get('/history',(req,res)=>{
-    order.find({}).sort([['date', +1]]).exec((err,data)=>{
+    order.find({}).sort([['date', -1]]).exec((err,data)=>{
         if(err) return  res.status(500).send({ auth: true, message: err });
         return res.status(200).send(data);
     })
