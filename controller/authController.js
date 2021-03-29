@@ -185,6 +185,19 @@ router.put('/edit', function (req, res) {
 })
 
 
+router.get('/userInfo', (req, res) => {
+
+
+
+    user.findOne({ _id: req.body._id }, { password: 0 }, (err, data) => {
+        if (err) return res.status(500).send({ auth: true, message: err });
+        return res.status(200).send(data);
+    })
+
+})
+
+
+
 //Hard delete user
 router.delete('/deleteUser', (req, res) => {
     let id = req.body._id;
