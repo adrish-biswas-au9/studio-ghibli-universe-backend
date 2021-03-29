@@ -185,7 +185,7 @@ router.put('/edit', function (req, res) {
 })
 
 
-router.get('/userInfo', (req, res) => {
+router.post('/userInfo', (req, res) => {
 
 
 
