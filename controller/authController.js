@@ -183,11 +183,11 @@ router.post('/userInfo', (req, res) => {
 })
 
 
-router.put('/image_upload', (req, res) => {
+router.post('/image_upload', (req, res) => {
     console.log(req.files)
     console.log(req.body)
 
-    let image = req.body.files;
+    let image = req.files.avatar;
     if (image.mimetype !== 'image/jpeg') {
         return res.redirect("/?errmessage=Only jpg/jpeg extensions are allowed.")
     }
