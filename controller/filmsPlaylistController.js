@@ -39,7 +39,7 @@ router.delete('/delete', (req, res) => {
         { _id: req.params.id },
         (err, data) => {
             if (err) res.status(400).send({ auth: true, message: err });
-            return res.status(200).send("Data deleted")
+            return res.status(200).send(data)
         })
 })
 
