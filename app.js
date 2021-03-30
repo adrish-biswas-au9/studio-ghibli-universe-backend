@@ -16,7 +16,7 @@ app.get('/', (req, res) => {
 
 app.use('/api/auth/', authController)
 app.use('/orders/', ordersController)
-app.use('/filmsPlaylistController/', ordersController);
+app.use('/filmsPlaylist/', filmsPlaylistController);
 //middleware
 //cross origin resource sharing
 
