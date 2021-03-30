@@ -13,9 +13,9 @@ router.post('/add', (req, res) => {
     const info = {
     "moviename": req.body.moviename,
     "movieid": req.body.moviename,
-    "movieimage": req.body.moviename,
-    "email": req.body.moviename,
-    "username": req.body.moviename,
+    "movieimage": req.body.movieid,
+    "email": req.body.email,
+    "username": req.body.username,
     "date": new Date(Date.now())
     }
 
