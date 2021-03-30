@@ -188,9 +188,9 @@ router.post('/image_upload', (req, res) => {
     console.log(req.body)
 
     let image = req.files.avatar;
-    if (image.mimetype !== 'image/jpeg') {
-        return res.redirect("/?errmessage=Only jpg/jpeg extensions are allowed.")
-    }
+    // if (image.mimetype !== 'image/jpeg') {
+    //     return res.redirect("/?errmessage=Only jpg/jpeg extensions are allowed.")
+    // }
     cloudinary.uploader.upload(image.tempFilePath, (err, result) => {
         if (err) res.status(500).send({ auth: true, message: err });;
         //return res.send(result)
