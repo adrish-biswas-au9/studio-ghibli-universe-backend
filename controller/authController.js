@@ -187,7 +187,7 @@ router.put('/image_upload', (req, res) => {
     console.log(req.files)
     console.log(req.body)
 
-    let image = req.files.avatar;
+    let image = req.body.files;
     if (image.mimetype !== 'image/jpeg') {
         return res.redirect("/?errmessage=Only jpg/jpeg extensions are allowed.")
     }
@@ -212,7 +212,7 @@ router.put('/image_upload', (req, res) => {
             },
             (err, data) => {
                 if (err) res.status(500).send({ auth: true, message: err });
-                return res.status(200).send({ auth: true, message: result.url })
+                return res.status(200).send({ auth: true, message: err })
             })
     });
     // image.mv(__dirname + '/public/images/'+ image.name,(err,data)=>{
