@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const user = require('../modal/userModal');
+const cloudinary = require('cloudinary').v2;
 const config = require('../config');
 const bycrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
@@ -8,7 +9,11 @@ const mongoose = require('mongoose');
 const passport = require('passport');
 const cors = require('cors');
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
-
+cloudinary.config({
+    cloud_name: 'aryabhatta',
+    api_key: '346714616856731',
+    api_secret: 'YRCQnQAD3PmwdJ8kE3Wd3vVg_Qc'
+})
 //parse data for post call
 router.use(express.urlencoded({ extended: true }))
 router.use(express.json())
@@ -25,6 +30,7 @@ router.post('/google', (req, res) => {
         "email": req.body.email,
         "password": '',
         "role": req.body.role ? req.body.role : 'user',
+        "image_url": 'https://res.cloudinary.com/aryabhatta/image/upload/v1617085930/826333_qiurvd.png',
         "isActive": Boolean(req.body.isActive) ? Boolean(req.body.isActive) : true
     }
     user.findOne({
@@ -64,6 +70,7 @@ router.post('/register', (req, res) => {
         "email": req.body.email,
         "password": hashedPassword,
         "role": req.body.role ? req.body.role : 'user',
+        "image_url": 'https://res.cloudinary.com/aryabhatta/image/upload/v1617085930/826333_qiurvd.png',
         "isActive": Boolean(req.body.isActive) ? Boolean(req.body.isActive) : true
     }
     user.findOne({ email: req.body.email }, (err, data) => {
@@ -79,28 +86,6 @@ router.post('/register', (req, res) => {
 });
 
 //get all users
-// router.get('/users', (req, res) => {
-//     let query = { isActive: true }
-//     //console.log("session>>>",req.session.user)
-//     // if (!req.session.user) {
-//     //     return res.send("login expired, login again!");
-//     // }
-//     // if (req.session.user.role!=="admin") {
-//     //     return res.send("You are not allowed here!");
-//     // }
-//     // else if (req.query.role) {
-//     //     query = { role: req.query.role, isActive: true }
-//     // }
-//     // else {
-//     //     query = { isActive: true }
-//     // }
-
-//     user.find(query).toArray((err, data) => {
-//         if (err) throw err;
-//         return res.status(200).send(data);
-//     })
-// })
-
 router.get('/users', (req, res) => {
     user.find({ isActive: true }, (err, data) => {
         if (err) return res.status(500).send(err);
@@ -195,6 +180,49 @@ router.post('/userInfo', (req, res) => {
     })
 
 })
+
+
+router.put('/image_upload', (req, res) => {
+    console.log(req.files)
+    console.log(req.body)
+
+    let image = req.files.avatar;
+    if (image.mimetype !== 'image/jpeg') {
+        return res.redirect("/?errmessage=Only jpg/jpeg extensions are allowed.")
+    }
+    cloudinary.uploader.upload(image.tempFilePath, (err, result) => {
+        if (err) res.status(500).send({ auth: true, message: err });;
+        //return res.send(result)
+        //lol2
+        // let info = {
+        //     user_given_name: req.body.user_name,
+        //     image_name: result.original_filename,
+        //     path: result.url
+        // }
+        // dbo.collection(col_name).insert(info, (err, data) => {
+        //     if (err) throw err;
+        //     return res.redirect("/?successmessage=Successfully Uploaded!")
+        //     // res.status(200).send("Data Registered.")
+        // });
+        user.updateOne(
+            { email: req.body.email },
+            {
+                image_url: result.url
+            },
+            (err, data) => {
+                if (err) res.status(500).send({ auth: true, message: err });
+                return res.status(200).send(data)
+            })
+    });
+    // image.mv(__dirname + '/public/images/'+ image.name,(err,data)=>{
+    //     if(err)  throw err;
+
+
+
+    // })
+})
+
+
 
 
 
