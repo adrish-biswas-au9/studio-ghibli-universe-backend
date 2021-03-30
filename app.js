@@ -6,6 +6,7 @@ const cors = require('cors');
 const port = process.env.PORT || 7700;
 const authController = require('./controller/authController');
 const ordersController = require('./controller/ordersConroller');
+const filmsPlaylistController = require('./controller/filmsPlaylistController');
 // const { Router, response } = require('express');
 app.use(cors());
 
@@ -15,6 +16,7 @@ app.get('/', (req, res) => {
 
 app.use('/api/auth/', authController)
 app.use('/orders/', ordersController)
+app.use('/filmsPlaylistController/', ordersController);
 //middleware
 //cross origin resource sharing
 
