@@ -32,6 +32,15 @@ router.get('/view', (req, res) => {
         return res.status(200).send(data);
     })
 })
-
+router.delete('/delete', (req, res) => {
+    let id = req.body._id;
+    let id = req.params.id;
+    user.remove(
+        { _id: req.params.id },
+        (err, data) => {
+            if (err) res.status(400).send({ auth: true, message: err });
+            return res.status(200).send("Data deleted")
+        })
+})
 
 module.exports = router;
