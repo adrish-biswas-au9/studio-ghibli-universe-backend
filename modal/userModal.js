@@ -4,7 +4,6 @@ const userSchema=new mongoose.Schema({
     email: String,
     password: String,
     role:String,
-    image_url: String,
     isActive: Boolean
 })
 //mongoose.model('collection','schema)

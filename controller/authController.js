@@ -197,6 +197,42 @@ router.post('/userInfo', (req, res) => {
 })
 
 
+router.put('/editPassword', function (req, res) {
+    // let status;
+    // if (req.body.isActive) {
+    //     if (req.body.isActive == 'true') {
+    //         status = true
+    //     } else {
+    //         status = false
+    //     }
+    // } else {
+    //     status = false
+    // }
+    // var id = req.params.id;
+    // let { id } = req.params //destructuring
+    let hashedPassword = bycrypt.hashSync(req.body.password, 8)
+    //let id = req.body._id;
+    user.findOne({ email: req.body.email }, (err, data) => {
+        if (err) throw err;
+        if (data) {
+            user.updateOne(
+                { email: req.body.email },
+                {
+                    password: hashedPassword
+                },
+                (err, data) => {
+                    if (err) res.status(500).send({ auth: true, message: err });
+                    return res.status(200).send(data)
+                })
+        }
+        else {
+            return res.status(200).send({ auth: true, message: "Wrong email entered!" })
+        }
+    })
+    
+})
+
+
 
 //Hard delete user
 router.delete('/deleteUser', (req, res) => {
