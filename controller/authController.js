@@ -14,6 +14,7 @@ cloudinary.config({
     api_key: '346714616856731',
     api_secret: 'YRCQnQAD3PmwdJ8kE3Wd3vVg_Qc'
 })
+
 //parse data for post call
 router.use(express.urlencoded({ extended: true }))
 router.use(express.json())
