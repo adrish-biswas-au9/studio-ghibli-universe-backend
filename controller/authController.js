@@ -212,7 +212,7 @@ router.put('/image_upload', (req, res) => {
             },
             (err, data) => {
                 if (err) res.status(500).send({ auth: true, message: err });
-                return res.status(200).send(data)
+                return res.status(200).send({ auth: true, message: result.url })
             })
     });
     // image.mv(__dirname + '/public/images/'+ image.name,(err,data)=>{
