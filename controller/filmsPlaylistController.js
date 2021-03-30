@@ -26,4 +26,12 @@ router.post('/add', (req, res) => {
     });
 })
 
+router.get('/view', (req, res) => {
+    filmsPlaylist.find({}, (err, data) => {
+        if (err) return res.status(500).send(err);
+        return res.status(200).send(data);
+    })
+})
+
+
 module.exports = router;
