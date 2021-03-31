@@ -10,6 +10,9 @@ router.use(express.urlencoded({ extended: true }));
 router.use(express.json());
 
 router.post('/add', (req, res) => {
+    if (!req.session.user) {
+        return res.status(400).send({auth:false,message:"login expired, login again!"});
+    }
     const info = {
         "name": req.body.name,
         "user_id": req.body.user_id,
@@ -26,12 +29,18 @@ router.post('/add', (req, res) => {
 })
 
 router.get('/view', (req, res) => {
+    if (!req.session.user) {
+        return res.status(400).send({auth:false,message:"login expired, login again!"});
+    }
     following.find({}, (err, data) => {
         if (err) return res.status(500).send(err);
         return res.status(200).send(data);
     })
 })
 router.delete('/delete/:id', (req, res) => {
+    if (!req.session.user) {
+        return res.status(400).send({auth:false,message:"login expired, login again!"});
+    }
     // let id = req.body._id;
     let id = req.params.id;
     console.log(req.params.id);

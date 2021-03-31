@@ -11,6 +11,9 @@ router.use(express.json());
 
 
 router.post('/register', (req, res) => {
+    if (!req.session.user) {
+        return res.status(400).send({auth:false,message:"login expired, login again!"});
+    }
     const info = {
         "email": req.body.email,
         "status": 'pending',
@@ -19,6 +22,7 @@ router.post('/register', (req, res) => {
     }
 
     order.create(info, (err, data) => {
+
         if (err) res.status(400).send({ auth: true, message: err });
         return res.status(200).send({ auth: true, message: "Data Registered!" })
         // res.redirect('/')
@@ -26,6 +30,9 @@ router.post('/register', (req, res) => {
 })
 
 router.get('/history',(req,res)=>{
+    if (!req.session.user) {
+        return res.status(400).send({auth:false,message:"login expired, login again!"});
+    }
     order.find({}).sort([['date', -1]]).exec((err,data)=>{
         if(err) return  res.status(500).send({ auth: true, message: err });
         return res.status(200).send(data);
@@ -34,6 +41,9 @@ router.get('/history',(req,res)=>{
 
 
 router.put('/edit',function (req, res) {
+    if (!req.session.user) {
+        return res.status(400).send({auth:false,message:"login expired, login again!"});
+    }
     let status;
     // if(req.body.isActive){
     //     if(req.body.isActive=='true'){

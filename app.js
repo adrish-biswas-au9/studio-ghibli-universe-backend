@@ -3,6 +3,8 @@ const express = require('express');
 let app = express();
 const db = require('./db');
 const cors = require('cors');
+const config = require('./config');
+const session = require('express-session');
 const port = process.env.PORT || 7700;
 const authController = require('./controller/authController');
 const ordersController = require('./controller/ordersConroller');
@@ -24,6 +26,11 @@ const locationController = require('./controller/locationController');
 //middleware
 //cross origin resource sharing
 app.use(cors());
+app.use(session(
+    {
+        secret:config.secret
+    }
+))
 
 app.get('/', (req, res) => {
     return res.status(200).send("Health Ok")
