@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const posterSchema = new mongoose.Schema(
+const t_shirtSchema = new mongoose.Schema(
     {
         "id": String,
         "merch_link": String,
@@ -8,5 +8,5 @@ const posterSchema = new mongoose.Schema(
     }
 )
 //mongoose.model('collection','schema)
-mongoose.model('poster', posterSchema);
-module.exports = mongoose.model('poster');
+mongoose.model('t_shirt', t_shirtSchema);
+module.exports = mongoose.model('t_shirt');

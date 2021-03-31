@@ -13,6 +13,7 @@ const followingController = require('./controller/followingController');
 const blu_rayController = require('./controller/blu_rayController');
 const dvdController = require('./controller/dvdController');
 const posterController = require('./controller/posterController');
+const t_shirtController = require('./controller/t_shirtController');
 // const { Router, response } = require('express');
 
 //middleware
@@ -32,7 +33,7 @@ app.use('/following/', followingController);
 app.use('/blu_ray/', blu_rayController);
 app.use('/dvd/', dvdController);
 app.use('/poster/', posterController);
-
+app.use('/t_shirt/', t_shirtController);
 
 app.listen(port, (err) => {
     if (err) throw err;
