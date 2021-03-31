@@ -15,7 +15,7 @@ const dvdController = require('./controller/dvdController');
 const posterController = require('./controller/posterController');
 const t_shirtController = require('./controller/t_shirtController');
 const accessorieController = require('./controller/accessorieController');
-const videogameController = require('./controller/videogameController');
+const video_gameController = require('./controller/video_gameController');
 // const { Router, response } = require('express');
 
 //middleware
@@ -37,7 +37,7 @@ app.use('/dvd/', dvdController);
 app.use('/poster/', posterController);
 app.use('/t_shirt/', t_shirtController);
 app.use('/accessorie/', accessorieController);
-app.use('/videogame/', videogameController);
+app.use('/video_game/', video_gameController);
 
 
 
