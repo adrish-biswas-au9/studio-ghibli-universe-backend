@@ -35,7 +35,7 @@ router.get('/view', (req, res) => {
 router.delete('/delete', (req, res) => {
     // let id = req.body._id;
     let id = req.params.id;
-    filmsPlaylist.deleteOne(
+    filmsPlaylist.findOneAndDelete(
         { _id: req.params.id },
         (err, data) => {
             if (err) res.status(400).send({ auth: true, message: err });
