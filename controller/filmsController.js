@@ -16,5 +16,15 @@ router.get('/view', (req, res) => {
     })
 })
 
+router.get('/view/:id', (req, res) => {
+    // let id = req.body._id;
+    let id = req.params.id;
+    console.log(req.params.id);
+    film.find({id: req.params.id}, (err, data) => {
+        if (err) return res.status(500).send(err);
+        return res.status(200).send(data);
+    })
+})
+
 
 module.exports = router;
