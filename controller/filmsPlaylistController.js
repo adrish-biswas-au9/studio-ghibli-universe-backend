@@ -36,7 +36,7 @@ router.delete('/delete', (req, res) => {
     // let id = req.body._id;
     let id = req.params.id;
     filmsPlaylist.remove(
-        { _id: req.params.id },
+        { _id: mongoose.ObjectId(req.params.id) },
         (err, data) => {
             if (err) res.status(400).send({ auth: true, message: err });
             return res.status(200).send(data)
