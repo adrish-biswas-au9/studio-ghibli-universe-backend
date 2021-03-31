@@ -13,6 +13,7 @@ const followingController = require('./controller/followingController');
 const blu_rayController = require('./controller/blu_rayController');
 const dvdController = require('./controller/dvdController');
 const posterController = require('./controller/posterController');
+const t_shirtController = require('./controller/t_shirtController');
 const accessorieController = require('./controller/accessorieController');
 // const { Router, response } = require('express');
 
