@@ -18,6 +18,7 @@ const accessorieController = require('./controller/accessorieController');
 const videogameController = require('./controller/videogameController');
 const vehicleController = require('./controller/vehicleController');
 const characterController = require('./controller/characterController');
+const locationController = require('./controller/locationController');
 // const { Router, response } = require('express');
 
 //middleware
@@ -42,6 +43,7 @@ app.use('/accessorie/', accessorieController);
 app.use('/videogame/', videogameController);
 app.use('/vehicle/', vehicleController);
 app.use('/character/', characterController);
+app.use('/location/', locationController);
 
 
 app.listen(port, (err) => {
