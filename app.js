@@ -16,6 +16,7 @@ const posterController = require('./controller/posterController');
 const t_shirtController = require('./controller/t_shirtController');
 const accessorieController = require('./controller/accessorieController');
 const videogameController = require('./controller/videogameController');
+const vehicleController = require('./controller/vehicleController');
 // const { Router, response } = require('express');
 
 //middleware
@@ -38,7 +39,7 @@ app.use('/poster/', posterController);
 app.use('/t_shirt/', t_shirtController);
 app.use('/accessorie/', accessorieController);
 app.use('/videogame/', videogameController);
-
+app.use('/vehicle/', vehicleController);
 
 
 app.listen(port, (err) => {
