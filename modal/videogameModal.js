@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const video_gameSchema = new mongoose.Schema(
+const videogameSchema = new mongoose.Schema(
     {
         "id": String,
         "merch_link": String,
@@ -8,5 +8,5 @@ const video_gameSchema = new mongoose.Schema(
     }
 )
 //mongoose.model('collection','schema)
-mongoose.model('video_game', video_gameSchema);
-module.exports = mongoose.model('video_game');
+mongoose.model('videogame', videogameSchema);
+module.exports = mongoose.model('videogame');
