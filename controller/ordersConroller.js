@@ -11,9 +11,7 @@ router.use(express.json());
 
 
 router.post('/register', (req, res) => {
-    if (!req.session.user) {
-        return res.status(400).send({auth:false,message:"login expired, login again!"});
-    }
+
     const info = {
         "email": req.body.email,
         "status": 'pending',
@@ -29,21 +27,17 @@ router.post('/register', (req, res) => {
     });
 })
 
-router.get('/history',(req,res)=>{
-    if (!req.session.user) {
-        return res.status(400).send({auth:false,message:"login expired, login again!"});
-    }
-    order.find({}).sort([['date', -1]]).exec((err,data)=>{
-        if(err) return  res.status(500).send({ auth: true, message: err });
+router.get('/history', (req, res) => {
+
+    order.find({}).sort([['date', -1]]).exec((err, data) => {
+        if (err) return res.status(500).send({ auth: true, message: err });
         return res.status(200).send(data);
     })
 })
 
 
-router.put('/edit',function (req, res) {
-    if (!req.session.user) {
-        return res.status(400).send({auth:false,message:"login expired, login again!"});
-    }
+router.put('/edit', function (req, res) {
+
     let status;
     // if(req.body.isActive){
     //     if(req.body.isActive=='true'){
@@ -58,15 +52,15 @@ router.put('/edit',function (req, res) {
     // let { id } = req.params //destructuring
     let id = req.body._id;
     order.updateOne(
-      { _id:req.body._id },
-      {
-          status: req.body.status
-      },
-      (err, data) => {
-          if (err) res.status(500).send({ auth: true, message: err });
-          return res.status(200).send(data)
-      })
-  })
+        { _id: req.body._id },
+        {
+            status: req.body.status
+        },
+        (err, data) => {
+            if (err) res.status(500).send({ auth: true, message: err });
+            return res.status(200).send(data)
+        })
+})
 
 
 module.exports = router;

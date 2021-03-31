@@ -39,7 +39,7 @@ router.post('/google', (req, res) => {
                 // res.setHeader('Access-Control-Allow-Origin', '*')
                 // res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
                 // return done(null, { auth: true, token });
-                req.session.user=data;
+                req.session.user = data;
                 return res.status(200).send(info);
             });
         }
@@ -47,7 +47,7 @@ router.post('/google', (req, res) => {
             // res.setHeader('Access-Control-Allow-Origin', '*')
             // res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
             // return done(null, { auth: true, token });
-            req.session.user=data;
+            req.session.user = data;
             return res.status(200).send(data);
         }
 
@@ -104,9 +104,7 @@ router.post('/register', (req, res) => {
 // })
 
 router.get('/users', (req, res) => {
-    if (!req.session.user) {
-        return res.status(400).send({auth:false,message:"login expired, login again!"});
-    }
+
     user.find({ isActive: true }, (err, data) => {
         if (err) return res.status(500).send(err);
         return res.status(200).send(data);
@@ -127,7 +125,7 @@ router.post('/login', (req, res) => {
         }
         let validPassword = bycrypt.compareSync(req.body.password, data.password)
         if (!validPassword) return res.status(400).send("Wrong password entered!");
-        req.session.user=data;
+        req.session.user = data;
         return res.status(200).send(data)
         // res.redirect('/')
     });
@@ -135,7 +133,7 @@ router.post('/login', (req, res) => {
 
 //logout
 router.get('/logout', (req, res) => {
-    req.session.user=null;
+    req.session.user = null;
     return res.status(200).send("Logout successful!")
 })
 
@@ -152,9 +150,7 @@ router.put('/delete', function (req, res) {
     // }
     // var id = req.params.id;
     // let { id } = req.params //destructuring
-    if (!req.session.user) {
-        return res.status(400).send({auth:false,message:"login expired, login again!"});
-    }
+
     let id = req.body._id;
     user.updateOne(
         { email: req.body.email },
@@ -180,9 +176,7 @@ router.put('/edit', function (req, res) {
     // }
     // var id = req.params.id;
     // let { id } = req.params //destructuring
-    if (!req.session.user) {
-        return res.status(400).send({auth:false,message:"login expired, login again!"});
-    }
+
     let id = req.body._id;
     user.updateOne(
         { email: req.body.email },
@@ -198,9 +192,7 @@ router.put('/edit', function (req, res) {
 
 router.post('/userInfo', (req, res) => {
 
-    if (!req.session.user) {
-        return res.status(400).send({auth:false,message:"login expired, login again!"});
-    }
+
 
     user.findOne({ _id: req.body._id }, { password: 0 }, (err, data) => {
         if (err) return res.status(500).send({ auth: true, message: err });
@@ -223,9 +215,7 @@ router.put('/editPassword', function (req, res) {
     // }
     // var id = req.params.id;
     // let { id } = req.params //destructuring
-    if (!req.session.user) {
-        return res.status(400).send({auth:false,message:"login expired, login again!"});
-    }
+
     let hashedPassword = bycrypt.hashSync(req.body.password, 8)
     //let id = req.body._id;
     user.findOne({ email: req.body.email }, (err, data) => {
@@ -245,16 +235,14 @@ router.put('/editPassword', function (req, res) {
             return res.status(200).send({ auth: true, message: "Wrong email entered!" })
         }
     })
-    
+
 })
 
 
 
 //Hard delete user
 router.delete('/deleteUser', (req, res) => {
-    if (!req.session.user) {
-        return res.status(400).send({auth:false,message:"login expired, login again!"});
-    }
+
     let id = req.body._id;
     user.remove(
         { _id: mongoose.ObjectId(id) },

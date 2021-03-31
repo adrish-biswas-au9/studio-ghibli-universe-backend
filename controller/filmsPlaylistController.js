@@ -10,16 +10,14 @@ router.use(express.urlencoded({ extended: true }));
 router.use(express.json());
 
 router.post('/add', (req, res) => {
-    if (!req.session.user) {
-        return res.status(400).send({auth:false,message:"login expired, login again!"});
-    }
+
     const info = {
-    "moviename": req.body.moviename,
-    "movieid": req.body.movieid,
-    "movieimage": req.body.movieimage,
-    "email": req.body.email,
-    "username": req.body.username,
-    "date": new Date(Date.now())
+        "moviename": req.body.moviename,
+        "movieid": req.body.movieid,
+        "movieimage": req.body.movieimage,
+        "email": req.body.email,
+        "username": req.body.username,
+        "date": new Date(Date.now())
     }
 
     filmsPlaylist.create(info, (err, data) => {
@@ -30,18 +28,14 @@ router.post('/add', (req, res) => {
 })
 
 router.get('/view', (req, res) => {
-    if (!req.session.user) {
-        return res.status(400).send({auth:false,message:"login expired, login again!"});
-    }
+
     filmsPlaylist.find({}, (err, data) => {
         if (err) return res.status(500).send(err);
         return res.status(200).send(data);
     })
 })
 router.delete('/delete/:id', (req, res) => {
-    if (!req.session.user) {
-        return res.status(400).send({auth:false,message:"login expired, login again!"});
-    }
+
     // let id = req.body._id;
     let id = req.params.id;
     console.log(req.params.id);
