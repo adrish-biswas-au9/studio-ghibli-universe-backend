@@ -10,7 +10,11 @@ const filmsPlaylistController = require('./controller/filmsPlaylistController');
 const filmsController = require('./controller/filmsController');
 const shoppingWishlistController = require('./controller/shoppingWishlistController');
 const followingController = require('./controller/followingController');
+const blu_rayController = require('./controller/blu_rayController');
 // const { Router, response } = require('express');
+
+//middleware
+//cross origin resource sharing
 app.use(cors());
 
 app.get('/', (req, res) => {
@@ -23,8 +27,9 @@ app.use('/filmsPlaylist/', filmsPlaylistController);
 app.use('/films/', filmsController);
 app.use('/shoppingWishlist/', shoppingWishlistController);
 app.use('/following/', followingController);
-//middleware
-//cross origin resource sharing
+app.use('/blu_ray/', blu_rayController);
+
+
 
 
 app.listen(port, (err) => {
