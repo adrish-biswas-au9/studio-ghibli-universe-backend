@@ -32,9 +32,10 @@ router.get('/view', (req, res) => {
         return res.status(200).send(data);
     })
 })
-router.delete('/delete', (req, res) => {
+router.delete('/delete/:id', (req, res) => {
     // let id = req.body._id;
     let id = req.params.id;
+    console.log(req.params.id);
     filmsPlaylist.findOneAndDelete(
         { _id: req.params.id },
         (err, data) => {
